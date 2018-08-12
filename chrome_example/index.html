@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Hello Dojo!</title>
+</head>
+<body>
+    <div id="dojoContainer" ></div>
+    <!-- load Dojo -->
+    <script src="dojo/dojo.js"
+            data-dojo-config="async: true"></script>
+
+    <script>
+		var global;
+        require([
+            'dojo/dom',
+            'dojo/dom-construct',
+			'dojo/_base/declare',
+			'dojo/_base/lang',
+			'dojo/_base/array',
+			'dojo/on',
+			'dojo/topic',
+			'dojo/query',
+			'dojo/dom-class',
+			'dojo/dom-style',
+			'child/Container',
+			'child/ChildWidget',
+			'dijit/_Widget',
+			'dijit/_TemplatedMixin',
+			'dijit/_WidgetsInTemplateMixin',
+			'dojo/text!./child/template/a.html',
+        ], function (dom, domConstruct, declare, lang, array, on, topic, query, domClass, domStyle, Container, ChildWidget, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin) {
+				this.init = function init() {
+					window.container1 = new Container();
+					this.childList = [];
+					window.container1.placeAt(document.getElementById('dojoContainer'));
+					var button = domConstruct.create('button',{innerHTML: '添加'}, document.body);
+					on(button, 'click', lang.hitch(this, function () {
+						if (!this.childList) {
+							this.childList = [];
+						}
+						var containerlike = window.container1;
+						if (containerlike) {
+							for (var i = 0; i < 100; i++) {
+									this.child = new ChildWidget();
+									var child = this.child;
+									var domNode = child.domNode;
+									child.placeAt(containerlike.domNode);
+									// this.childList.push(domNode);
+							}	
+						}		
+					}));
+					var deleteButton = domConstruct.create('button',{innerHTML: '删除'}, document.body);
+					on(deleteButton, 'click', lang.hitch(this, function () {
+							// window.container1.destroy();
+							domConstruct.destroy(window.container1.domNode);
+							window.container1 = new Container();
+							window.container1.placeAt(document.getElementById('dojoContainer'));
+							//this.childList = [];
+							// this.childList = null;
+							//this.child = null;
+					}));
+				};
+			this.init();
+			// this.init = null;
+        });
+    </script>
+</body>
+</html>
